@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
-import api from "../services/api";
 import DeleteButton from "./DeleteButton";
 
 const ItemList = () => {
   const [items, setItems] = useState([]);
+  const [ error, setError ] = useState(null);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await api.get("/items");
-        setItems(response.data);
-      } catch (err) {
-        console.error("Failed to fetch items:", err);
+        const response = await fetch('https://nasa-api-backend.onrender.com/api/items');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setItems(data);
+      } catch (error) {
+        setError(error.message);
+        console.error("Failed to fetch items:", error);
       }
     };
     fetchItems();
   }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
     <div>
