@@ -22,6 +22,10 @@ const ItemList = () => {
     fetchItems();
   }, []);
 
+  const handleDelete = (id) => {
+    setItems(items.filter(item => item._id !== id));
+  };
+
   if (error) {
     return <div>Error: {error}</div>
   }
@@ -33,7 +37,7 @@ const ItemList = () => {
         {items.map((item) => (
           <li key={item._id}>
             <strong>{item.title}</strong>: {item.description}
-            <DeleteButton id={item._id} onDelete={() => setItems(items.filter((i) => i._id !== item._id))} />
+            <DeleteButton id={item._id} onDelete={handleDelete} />
           </li>
         ))}
       </ul>

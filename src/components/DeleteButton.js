@@ -5,7 +5,7 @@ const DeleteButton = ({ id, onDelete }) => {
   const handleDelete = async () => {
     try {
       await api.delete(`/items/${id}`);
-      onDelete();
+      onDelete(id);
     } catch (err) {
       console.error("Failed to delete item:", err);
     }
